@@ -1121,6 +1121,7 @@ id listMode
 id list_item
 id loading
 id login
+id login1
 id masked
 id message
 id middle
@@ -1202,6 +1203,7 @@ id text2
 id textSpacerNoButtons
 id textSpacerNoTitle
 id textStart
+id textView
 id text_input_password_toggle
 id textinput_counter
 id textinput_error
@@ -1291,6 +1293,7 @@ layout design_navigation_item_subheader
 layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_password_icon
+layout loginlayout
 layout mtrl_layout_snackbar
 layout mtrl_layout_snackbar_include
 layout notification_action
