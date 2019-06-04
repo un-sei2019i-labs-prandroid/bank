@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -75,12 +76,12 @@ public class LoginActivity extends AppCompatActivity {
                     showLoginFailed(loginResult.getError());
                 }
                 if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
+                    loginUsuario();
                 }
                 setResult(Activity.RESULT_OK);
 
                 //Complete and destroy login activity once successful
-                finish();
+                //finish();
             }
         });
 
@@ -139,10 +140,35 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         switch ( view.getId()){
+            case R.id.login:
+                loginUsuario();
+                break;
             case R.id.register:
                     RegistrarUsuario();
                     break;
         }
+    }
+
+    private void loginUsuario() {
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_usuarios",null,1);
+        SQLiteDatabase db = conn.getReadableDatabase();
+        String [] parametros = {id.getText().toString(),email.getText().toString(),password.getText().toString()};
+
+        try{
+            Cursor cursor = db.rawQuery("SELECT * FROM "+Utilidades.TABLA_USUARIO+" WHERE "+Utilidades.CAMPO_ID+ "=? AND "+Utilidades.CAMPO_EMAIL+ "=? AND "+Utilidades.CAMPO_PASSWORD+ "=? ", parametros);
+            if (cursor.moveToFirst()) {
+                Toast.makeText(getApplicationContext(), "USUARIO " +
+                        " EXISTE.", Toast.LENGTH_SHORT).show();
+                setContentView(R.layout.loginlayout);
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"USUARIO NO EXISTE.",Toast.LENGTH_SHORT).show();
+            }
+        }catch(Exception E){
+            Toast.makeText(getApplicationContext(),"USUARIO NO EXISTE.",Toast.LENGTH_SHORT).show();
+        }
+
+        db.close();
     }
 
     private void RegistrarUsuario() {
@@ -156,8 +182,6 @@ public class LoginActivity extends AppCompatActivity {
         values.put(Utilidades.CAMPO_PASSWORD,password.getText().toString());
 
         Long idResultante = db.insert(Utilidades.TABLA_USUARIO,Utilidades.CAMPO_ID,values);
-
-        idResultante = (-1)*idResultante;
 
         Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
         db.close();
