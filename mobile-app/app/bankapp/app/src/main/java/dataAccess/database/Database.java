@@ -9,7 +9,9 @@ import com.example.bank_app.utilidades.Utilidades;
 public class Database extends ConexionSQLiteHelper {
     public Database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -21,9 +23,9 @@ public class Database extends ConexionSQLiteHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS usuario");
-        db.execSQL("DROP TABLE IF EXISTS cuenta");
-        db.execSQL("DROP TABLE IF EXISTS transaccion");
+        db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_USUARIO);
+        db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_CUENTA);
+        db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_TRANSACCIONES);
         onCreate(db);
     }
 

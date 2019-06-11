@@ -25,6 +25,7 @@ import com.example.bank_app.ConexionSQLiteHelper;
 import com.example.bank_app.utilidades.Utilidades;
 
 import businessLogic.controllers.SendMoneyController;
+import dataAccess.database.Database;
 import presentation.R;
 
 
@@ -36,6 +37,8 @@ public class SendMoneyActivity extends AppCompatActivity{
 
     EditText id, amount;
 
+    Database db;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +47,14 @@ public class SendMoneyActivity extends AppCompatActivity{
         id = (EditText) findViewById(R.id.id);
         amount =(EditText) findViewById(R.id.amount);
 
+        db = new Database(getApplicationContext(), "bd_cuentas", null, 1);
+
 
     }
 
     public void onClick(View view){
         if(view.getId() == R.id.button) {
-            SendMoneyController sm = new SendMoneyController(id_user_send, Integer.parseInt(id.getText().toString()), Integer.parseInt(amount.getText().toString()));
+            SendMoneyController sm = new SendMoneyController(id_user_send, Integer.parseInt(id.getText().toString()), Integer.parseInt(amount.getText().toString()), db);
             sm.sendmoney();
             if (sm.getCS()) {
                 Toast.makeText(getApplicationContext(), "MONEY SENT.", Toast.LENGTH_SHORT).show();

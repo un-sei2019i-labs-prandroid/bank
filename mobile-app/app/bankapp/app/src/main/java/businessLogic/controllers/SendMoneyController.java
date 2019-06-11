@@ -50,26 +50,31 @@ import static dataAccess.repositories.TransactionRepository.createTransaction;
 public class SendMoneyController extends AppCompatActivity{
     private int idSend, idReceive, amount;
 
+    private Database db;
+
     private Account a1, a2;
 
     private boolean CanSend;
 
-    public SendMoneyController(int idSend, int idReceive, int amount) {
+
+    public SendMoneyController(int idSend, int idReceive, int amount, Database db) {
         this.idSend = idSend;
         this.idReceive = idReceive;
         this.amount = amount;
+        this.db = db;
     }
 
     public void sendmoney(){
+
         Calendar c1 = Calendar.getInstance();
 
-        a1 = readAccount(this, idSend);
+        a1 = readAccount(db, idSend);
 
         if (a1.getSaldo() >= amount){
-            a2 = readAccount(this, idReceive);
-            updateAccount(this, Integer.toString(idSend), a1.getSaldo() - amount);
-            updateAccount(this, Integer.toString(idReceive), a2.getSaldo() + amount);
-            createTransaction(this, 1, Integer.toString(idSend), Integer.toString(idReceive),c1.get(Calendar.DATE), c1.get(Calendar.MONTH), c1.get(Calendar.YEAR),amount);
+            a2 = readAccount(db, idReceive);
+            updateAccount(this, Integer.toString(idSend), a1.getSaldo() - amount, db);
+            updateAccount(this, Integer.toString(idReceive), a2.getSaldo() + amount, db);
+            createTransaction(this, 1, Integer.toString(idSend), Integer.toString(idReceive),c1.get(Calendar.DATE), c1.get(Calendar.MONTH), c1.get(Calendar.YEAR),amount,db);
             CanSend = true;
         }
         else CanSend = false;

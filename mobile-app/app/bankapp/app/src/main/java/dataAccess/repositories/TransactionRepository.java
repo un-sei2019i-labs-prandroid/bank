@@ -11,9 +11,8 @@ import dataAccess.models.Account;
 
 public class TransactionRepository {
 
-    public static void createTransaction(Context context, int idt, String idue, String idur, int dia, int mes, int anho, int cantidad){
-        Database database = new Database(context,"bd_transacciones" ,null,1);
-        SQLiteDatabase admin = database.getWritableDatabase();
+    public static void createTransaction(Context context, int idt, String idue, String idur, int dia, int mes, int anho, int cantidad, Database db){
+        SQLiteDatabase admin = db.getWritableDatabase();
 
         ContentValues content1 = new ContentValues();
         content1.put(Utilidades.CAMPO_IDT, Integer.toString(idt));
